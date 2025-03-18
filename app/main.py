@@ -11,19 +11,16 @@ class Person:
 
 
 def create_person_list(people: list) -> list:
-    result = []
+    result = [
+        Person(person["name"], person["age"]) for person in people
+    ]
 
-    for person in people:
-        new_person = Person(person["name"], person["age"])
-        if person.get("wife", None):
-            new_person.wife_name = person["wife"]
-            result.append(new_person)
-        elif person.get("husband", None):
-            new_person.husband_name = person["husband"]
-            result.append(new_person)
-        else:
-            result.append(new_person)
-        new_person.add_person(new_person)
+    for person, person_data in zip(result, people):
+        if person_data.get("wife"):
+            person.wife_name = person_data["wife"]
+        if person_data.get("husband"):
+            person.husband_name = person_data["husband"]
+        person.add_person(person)
 
     for item in result:
         if hasattr(item, "wife_name"):
